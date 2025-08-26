@@ -46,3 +46,8 @@ flask-app-web-1   flask-app:latest       "ddtrace-run gunicor…"   web       15
 
 **Step6** 任意トレースをクリックし、トレースの詳細呼び出し構造を確認  
 ![traces-details](./images/container_apm_trace_details.png)
+
+### 参照ドキュメント  
+・[Docker環境へのAgentセットアップ](https://docs.datadoghq.com/containers/docker/?tab=standard)  
+・[ComposeでのAgentセットアップ](https://docs.datadoghq.com/containers/guide/compose-and-the-datadog-agent/)  
+・[Composeのオフィシャル設定例](https://github.com/DataDog/docker-compose-example)
