@@ -29,7 +29,7 @@ services:
       - web
     environment:
       - DD_API_KEY=<Your_Datadog_API_Key>                         # (必須)Datadogへ送信用のAPI keyを設定
-      - DD_SITE=datadoghq.com                                     # (必須)Datadog Endpointの設定
+      - DD_SITE=ap1.datadoghq.com                                 # (必須)Datadog Endpointの設定
       - DD_AGENT_HOST=dd-agent                                    # (必須)Agent_hostの定義
       - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true                       # (任意)カスタムメトリクス収集の有効化
       - DD_APM_ENABLED=true                                       # (任意)APM機能の有効化
