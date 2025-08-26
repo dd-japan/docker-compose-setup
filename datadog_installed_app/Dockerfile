@@ -10,7 +10,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     rm -rf /var/lib/apt/lists/*
 
 # Create non-root user
-RUN useradd -m appuser
+RUN groupadd -g 10001 appgroup \
+ && useradd -u 10001 -g 10001 -m -s /usr/sbin/nologin appuser
 WORKDIR /app
 
 # Install Python requirements
