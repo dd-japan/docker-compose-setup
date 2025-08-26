@@ -8,10 +8,10 @@ services:
       - "80:8000"
     restart: unless-stopped
     environment:
-      - DD_AGENT_HOST=datadog    # (任意)[APM]トレース情報の送信先を指定
-      - DD_ENV=demo              # (任意)[APM]サービスの環境を指定
-      - DD_SERVICE=web           # (任意)[APM]サービスの名前を指定
-      - DD_VERSION=ver1.0        # (任意)[APM]サービスのバージョンを指定
+      - DD_AGENT_HOST=datadog    # [APM]トレース情報の送信先を指定
+      - DD_ENV=demo              # [APM]サービスの環境を指定
+      - DD_SERVICE=web           # [APM]サービスの名前を指定
+      - DD_VERSION=ver1.0        # [APM]サービスのバージョンを指定
     logging:
       driver: "json-file"
       options:
