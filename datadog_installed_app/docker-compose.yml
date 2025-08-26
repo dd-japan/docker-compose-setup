@@ -1,0 +1,48 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: flask-app:latest
+    ports:
+      - "80:8000"
+    restart: unless-stopped
+    environment:
+      - DD_AGENT_HOST=datadog    # (任意)APM有効の際に必要な設定,トレース情報の送信先を指定
+      - DD_ENV=demo              # (任意)APM有効の際に必要な設定,サービスの環境を指定
+      - DD_SERVICE=web           # (任意)APM有効の際に必要な設定,サービスの名前を指定
+      - DD_VERSION=ver1.0        # (任意)APM有効の際に必要な設定,サービスのバージョンを指定
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+  datadog:
+    container_name: dd-agent
+    image: datadog/agent:latest
+    links:
+      - web
+    environment:
+      - DD_API_KEY=<Your_Datadog_API_Key>                         # (必須)Datadogへ送信用のAPI keyを設定
+      - DD_SITE=datadoghq.com                                     # (必須)Datadog Endpointの設定
+      - DD_AGENT_HOST=dd-agent                                    # (必須)Agent_hostの定義
+      - DD_DOGSTATSD_NON_LOCAL_TRAFFIC=true                       # (任意)カスタムメトリクス収集の有効化
+      - DD_APM_ENABLED=true                                       # (任意)APM機能の有効化
+      - DD_APM_NON_LOCAL_TRAFFIC=true                             # (任意)APM機能の有効化
+      - DD_LOGS_ENABLED=true                                      # (任意)ログ収集の有効化
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true                 # (任意)コンテナログを収集
+      - DD_CONTAINER_EXCLUDE_LOGS=name:dd-agent                   # (任意)収集ログからdd-agentのログを除外
+      - DD_PROCESS_CONFIG_PROCESS_COLLECTION_ENABLED=true         # (任意)Process収集の有効化
+      - DD_SYSTEM_PROBE_NETWORK_ENABLED=true                      # (任意)Cloud Networkの有効化
+      - DD_PROCESS_AGENT_ENABLED=true                             # (任意)Cloud Networkの有効化
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock                 # (必須)Agentのベーシック実行に必要なマウント
+      - /proc/:/host/proc/:ro                                     # (必須)Agentのベーシック実行に必要なマウント
+      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro                     # (必須)Agentのベーシック実行に必要なマウント
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro  # (任意)Agentによるログ収集に必要なマウント
+      - /etc/passwd:/etc/passwd:ro                                # (任意)Process収集の有効化
